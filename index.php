@@ -1,9 +1,21 @@
-<?php include('includes/header.php'); ?>
-<div class="container">
-    <h1>Welcome to Weekly Pre Scheduling</h1>
-    <a href="weeks.php" class="btn btn-primary">Manage Weeks</a>
-    <a href="team.php" class="btn btn-primary">Manage Teams</a>
-    <a href="employee.php" class="btn btn-primary">Manage Employees</a>
-    <a href="plan.php" class="btn btn-primary">Plan for the Week</a>
+<?php include('_templates/head.php'); ?>
+<?php include('_templates/header.php'); ?>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Weekly Pre Scheduling</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <a href="weeks.php" class="btn btn-primary btn-block mb-3">Manage Weeks</a>
+        </div>
+        <div class="col-md-4">
+            <a href="team.php" class="btn btn-primary btn-block mb-3">Manage Teams</a>
+        </div>
+        <div class="col-md-4">
+            <a href="employee.php" class="btn btn-primary btn-block mb-3">Manage Employees</a>
+        </div>
+        <div class="col-md-4">
+            <a href="plan.php" class="btn btn-primary btn-block mb-3">Plan for the Week</a>
+        </div>
+    </div>
 </div>
-<?php include('includes/footer.php'); ?>
+<?php include('_templates/footer.php'); ?>

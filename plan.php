@@ -1,62 +1,59 @@
-<?php
-$plans_file = 'data/plans.txt';
-
-function getPlans() {
-    global $plans_file;
-    return file($plans_file, FILE_IGNORE_NEW_LINES);
-}
-
-function addPlan($plan) {
-    global $plans_file;
-    file_put_contents($plans_file, $plan.PHP_EOL, FILE_APPEND);
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $week = $_POST['week'];
-    $team = $_POST['team'];
-    $employee = $_POST['employee'];
-    $hours = $_POST['hours'];
-    $plan = "$week,$team,$employee,$hours";
-    addPlan($plan);
-}
-
-$plans = getPlans();
-$weeks = file('data/weeks.txt', FILE_IGNORE_NEW_LINES);
-$teams = file('data/teams.txt', FILE_IGNORE_NEW_LINES);
-$employees = file('data/employees.txt', FILE_IGNORE_NEW_LINES);
-?>
-
-<?php include('includes/header.php'); ?>
-<div class="container">
-    <h2>Plan for the Week</h2>
-    <form method="POST">
-        <select name="week" required>
-            <?php foreach ($weeks as $week): ?>
-                <option value="<?= htmlspecialchars($week) ?>"><?= htmlspecialchars($week) ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <select name="team" required>
-            <?php foreach ($teams as $team): ?>
-                <option value="<?= htmlspecialchars($team) ?>"><?= htmlspecialchars($team) ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <select name="employee" required>
-            <?php foreach ($employees as $employee): ?>
-                <option value="<?= htmlspecialchars($employee) ?>"><?= htmlspecialchars($employee) ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <input type="number" name="hours" placeholder="Hours" required>
-        <button type="submit" class="btn btn-success">Add Plan</button>
+<?php include('_templates/head.php'); ?>
+<?php include('_templates/header.php'); ?>
+<div class="container mt-5">
+    <h2 class="text-center">Plan for the Week</h2>
+    <form class="mt-4" method="POST" id="planForm">
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <select class="form-control" id="week" name="week" required>
+                    <option value="">Select Week</option>
+                    <?php foreach ($weeks as $week): ?>
+                        <option value="<?= htmlspecialchars($week) ?>"><?= htmlspecialchars($week) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <select class="form-control" id="team" name="team" required>
+                    <option value="">Select Team</option>
+                    <?php foreach ($teams as $team): ?>
+                        <option value="<?= htmlspecialchars($team) ?>"><?= htmlspecialchars($team) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <select class="form-control" id="employee" name="employee" required>
+                    <option value="">Select Employee</option>
+                    <?php foreach ($employees as $employee): ?>
+                        <option value="<?= htmlspecialchars($employee) ?>"><?= htmlspecialchars($employee) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <input type="number" class="form-control" id="hours" name="hours" placeholder="Hours" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Add Plan</button>
     </form>
 
-    <h3>Consolidated Plans</h3>
-    <ul>
+    <h3 class="mt-5">Consolidated Plans</h3>
+    <ul class="list-group">
         <?php foreach ($plans as $plan): ?>
-            <li><?= htmlspecialchars($plan) ?></li>
+            <li class="list-group-item"><?= htmlspecialchars($plan) ?></li>
         <?php endforeach; ?>
     </ul>
 </div>
-<?php include('includes/footer.php'); ?>
+
+<script>
+document.getElementById('planForm').addEventListener('submit', function(e) {
+    let week = document.getElementById('week').value;
+    let team = document.getElementById('team').value;
+    let employee = document.getElementById('employee').value;
+    let hours = document.getElementById('hours').value;
+    if (!week || !team || !employee || !hours) {
+        alert('Please fill all the fields!');
+        e.preventDefault();
+    }
+});
+</script>
+
+<?php include('_templates/footer.php'); ?>
