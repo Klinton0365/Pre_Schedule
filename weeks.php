@@ -99,6 +99,8 @@
                     CREATE TABLE `$table_name` (
                         emp_id INT NOT NULL,
                         team_id INT NOT NULL,
+                        team_name VARCHAR(32),
+                        employee_name VARCHAR(128),
                         sun VARCHAR(10),
                         mon VARCHAR(10),
                         tue VARCHAR(10),
