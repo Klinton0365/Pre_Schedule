@@ -57,7 +57,7 @@ class Session
 
     public static function loadTemplate($name)
     {
-        $script = $_SERVER['DOCUMENT_ROOT'] . get_config('base_path') . "_template/$name.php";
+        $script = $_SERVER['DOCUMENT_ROOT'] . get_config('base_path') . "_templates/$name.php";
         //$script = $_SERVER['DOCUMENT_ROOT'] . "/htdocs/Photogram/htdocs/_template/$name.php"; //. get_config('base_path') = "base_path": "/Photogram/"
         if (is_file($script)) {
             include $script;

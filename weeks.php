@@ -11,7 +11,7 @@
     <form action="weeks.php" class="mt-4" method="POST" id="weekForm">
         <div class="form-row">
             <div class="col-md-4 mb-3">
-                <input type="text" class="form-control" id="week_name" name="week_name" placeholder="Week Name" required>
+                <input type="text" class="form-control" id="week_name" name="week_name" placeholder="Week Name (e.g., week_name)" required>
             </div>
             <div class="col-md-4 mb-3">
                 <input type="date" class="form-control" id="from_date" name="from_date" required>
@@ -31,9 +31,9 @@
         if (isset($_POST['delete_week'])) {
             // Delete week logic and corresponding table
             $week_id = $_POST['delete_week'];
-
+    
             $conn->begin_transaction();
-
+    
             try {
                 // Fetch the week name for the corresponding table
                 $sql = "SELECT week_name FROM list_wee WHERE id = ?";
@@ -41,50 +41,56 @@
                 $stmt->bind_param("i", $week_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
-                $week = $result->fetch_assoc();
-                $table_name = 'week_table_' . $week['week_name']; // Use week name for table name
-
-                // Delete corresponding table
-                $conn->query("DROP TABLE IF EXISTS `$table_name`");
-
-                // Delete the week from the weeks table
-                $sql = "DELETE FROM list_wee WHERE id = ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $week_id);
-                $stmt->execute();
-
-                $conn->commit();
-                echo "<div class='alert alert-success'>Week and corresponding table deleted successfully!</div>";
+    
+                // Check if week exists
+                if ($result->num_rows > 0) {
+                    $week = $result->fetch_assoc();
+                    $table_name = 'week_table_' . $week['week_name']; // Use week name for table name
+    
+                    // Delete corresponding table
+                    $conn->query("DROP TABLE IF EXISTS `$table_name`");
+    
+                    // Delete the week from the weeks table
+                    $sql = "DELETE FROM list_wee WHERE id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $week_id);
+                    $stmt->execute();
+    
+                    $conn->commit();
+                    echo "<div class='alert alert-success'>Week and corresponding table deleted successfully!</div>";
+                } else {
+                    echo "<div class='alert alert-warning'>Week not found!</div>";
+                }
             } catch (Exception $e) {
                 $conn->rollback();
                 echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
             }
-
+    
         } elseif (isset($_POST['update_week'])) {
             // Update week logic
             $week_id = $_POST['week_id'];
             $week_name = $_POST['week_name'];
             $from_date = $_POST['from_date'];
             $to_date = $_POST['to_date'];
-
+    
             $sql = "UPDATE list_wee SET week_name = ?, from_date = ?, to_date = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("sssi", $week_name, $from_date, $to_date, $week_id);
-
+    
             if ($stmt->execute()) {
                 echo "<div class='alert alert-success'>Week updated successfully!</div>";
             } else {
                 echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
             }
-
+    
         } else {
             // Insert new week and create corresponding table
             $week_name = $_POST['week_name'];
             $from_date = $_POST['from_date'];
             $to_date = $_POST['to_date'];
-
+    
             $conn->begin_transaction();
-
+    
             try {
                 // Insert new week into weeks table
                 $sql = "INSERT INTO list_wee (week_name, from_date, to_date) VALUES (?, ?, ?)";
@@ -92,11 +98,12 @@
                 $stmt->bind_param("sss", $week_name, $from_date, $to_date);
                 $stmt->execute();
                 $week_id = $conn->insert_id;
-
+    
                 // Create corresponding table for the week
                 $table_name = 'week_table_' . $week_name;
                 $create_table_sql = "
                     CREATE TABLE `$table_name` (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
                         emp_id INT NOT NULL,
                         team_id INT NOT NULL,
                         team_name VARCHAR(32),
@@ -107,12 +114,11 @@
                         wed VARCHAR(10),
                         thu VARCHAR(10),
                         fri VARCHAR(10),
-                        sat VARCHAR(10),
-                        PRIMARY KEY (emp_id)
+                        sat VARCHAR(10)
                     )
                 ";
                 $conn->query($create_table_sql);
-
+    
                 $conn->commit();
                 echo "<div class='alert alert-success'>Week added and corresponding table created successfully!</div>";
             } catch (Exception $e) {
@@ -121,6 +127,7 @@
             }
         }
     }
+    
 
     // Fetch the list of weeks from the database
     $sql = "SELECT * FROM list_wee ORDER BY id DESC"; // Display in descending order so the latest one shows first
