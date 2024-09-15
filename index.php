@@ -20,4 +20,4 @@ Session::loadTemplate('header');
         </div>
     </div>
 </div>
-<?php include('_templates/footer.php'); ?>
+<?php Session::loadTemplate('footer'); ?>

@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $employee_name = $emp_row['employee_name'];
 
         // Prepare the SQL query to insert or update the work hours table
-        $table_name = "week_table_" . $week; 
+        $table_name = "week_table_" . $week;
 
         // Check if the employee exists in the selected team
         $check_sql = "SELECT id FROM `$table_name` WHERE emp_id = ? AND team_id = ?";
@@ -165,13 +165,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div id="consolidatedTable" class="mt-4"></div>
 
     <script>
-document.getElementById('consolidatedWeek').addEventListener('change', function() {
-    const weekId = this.value;
-    if (weekId) {
-        fetch('get_week_data.php?week_id=' + weekId)
-            .then(response => response.json())
-            .then(data => {
-                let table = `<table class="table table-bordered">
+        document.getElementById('consolidatedWeek').addEventListener('change', function() {
+            const weekId = this.value;
+            if (weekId) {
+                fetch('get_week_data.php?week_id=' + weekId)
+                    .then(response => response.json())
+                    .then(data => {
+                        let table = `<table class="table table-bordered">
                     <thead style="background-color: #96DED1;">
                         <tr>
                             <th>#</th>
@@ -187,29 +187,29 @@ document.getElementById('consolidatedWeek').addEventListener('change', function(
                     </thead>
                     <tbody>`;
 
-                let teamColors = {
-                    'Marketing Team': '#E6F3FF',
-                    'Techno Team': '#FFF2CC',
-                    'Support Team': '#E2EFDA'
-                };
+                        let teamColors = {
+                            'Marketing Team': '#E6F3FF',
+                            'Techno Team': '#FFF2CC',
+                            'Support Team': '#E2EFDA'
+                        };
 
-                let currentTeam = '';
-                let teamTotalHours = {
-                    sun: 0,
-                    mon: 0,
-                    tue: 0,
-                    wed: 0,
-                    thu: 0,
-                    fri: 0,
-                    sat: 0,
-                    total: 0
-                };
+                        let currentTeam = '';
+                        let teamTotalHours = {
+                            sun: 0,
+                            mon: 0,
+                            tue: 0,
+                            wed: 0,
+                            thu: 0,
+                            fri: 0,
+                            sat: 0,
+                            total: 0
+                        };
 
-                data.forEach((item, index) => {
-                    if (currentTeam !== item.team_name) {
-                        if (currentTeam) {
-                            // Add team total row
-                            table += `<tr style="background-color: #ADD8E6;">
+                        data.forEach((item, index) => {
+                            if (currentTeam !== item.team_name) {
+                                if (currentTeam) {
+                                    // Add team total row
+                                    table += `<tr style="background-color: #ADD8E6;">
                                 <td>${currentTeam}</td>
                                 <td>${formatTime(teamTotalHours.sun)}</td>
                                 <td>${formatTime(teamTotalHours.mon)}</td>
@@ -220,24 +220,24 @@ document.getElementById('consolidatedWeek').addEventListener('change', function(
                                 <td>${formatTime(teamTotalHours.sat)}</td>
                                 <td>${formatTime(teamTotalHours.total)}</td>
                             </tr>`;
-                        }
-                        // Reset team totals
-                        teamTotalHours = {
-                            sun: 0,
-                            mon: 0,
-                            tue: 0,
-                            wed: 0,
-                            thu: 0,
-                            fri: 0,
-                            sat: 0,
-                            total: 0
-                        };
-                        currentTeam = item.team_name;
-                    }
+                                }
+                                // Reset team totals
+                                teamTotalHours = {
+                                    sun: 0,
+                                    mon: 0,
+                                    tue: 0,
+                                    wed: 0,
+                                    thu: 0,
+                                    fri: 0,
+                                    sat: 0,
+                                    total: 0
+                                };
+                                currentTeam = item.team_name;
+                            }
 
-                    let employeeTotal = calculateTotalHours(item);
+                            let employeeTotal = calculateTotalHours(item);
 
-                    table += `<tr style="background-color: ${teamColors[item.team_name] || '#FFF'};">
+                            table += `<tr style="background-color: ${teamColors[item.team_name] || '#FFF'};">
                         <td>${item.employee_name}</td>
                         <td>${item.sun || ''}</td>
                         <td>${item.mon || ''}</td>
@@ -249,20 +249,20 @@ document.getElementById('consolidatedWeek').addEventListener('change', function(
                         <td>${formatTime(employeeTotal)}</td>
                     </tr>`;
 
-                    // Add to team total
-                    teamTotalHours.sun += parseTime(item.sun);
-                    teamTotalHours.mon += parseTime(item.mon);
-                    teamTotalHours.tue += parseTime(item.tue);
-                    teamTotalHours.wed += parseTime(item.wed);
-                    teamTotalHours.thu += parseTime(item.thu);
-                    teamTotalHours.fri += parseTime(item.fri);
-                    teamTotalHours.sat += parseTime(item.sat);
-                    teamTotalHours.total += employeeTotal;
-                });
+                            // Add to team total
+                            teamTotalHours.sun += parseTime(item.sun);
+                            teamTotalHours.mon += parseTime(item.mon);
+                            teamTotalHours.tue += parseTime(item.tue);
+                            teamTotalHours.wed += parseTime(item.wed);
+                            teamTotalHours.thu += parseTime(item.thu);
+                            teamTotalHours.fri += parseTime(item.fri);
+                            teamTotalHours.sat += parseTime(item.sat);
+                            teamTotalHours.total += employeeTotal;
+                        });
 
-                if (currentTeam) {
-                    // Add the final team total row
-                    table += `<tr style="background-color: #ADD8E6;">
+                        if (currentTeam) {
+                            // Add the final team total row
+                            table += `<tr style="background-color: #ADD8E6;">
                         <td>${currentTeam}</td>
                         <td>${formatTime(teamTotalHours.sun)}</td>
                         <td>${formatTime(teamTotalHours.mon)}</td>
@@ -273,46 +273,44 @@ document.getElementById('consolidatedWeek').addEventListener('change', function(
                         <td>${formatTime(teamTotalHours.sat)}</td>
                         <td>${formatTime(teamTotalHours.total)}</td>
                     </tr>`;
-                }
+                        }
 
-                table += '</tbody></table>';
-                document.getElementById('consolidatedTable').innerHTML = table;
-            })
-            .catch(error => console.error('Error:', error));
-    }
-});
+                        table += '</tbody></table>';
+                        document.getElementById('consolidatedTable').innerHTML = table;
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
 
-// Function to calculate total hours for an employee
-function calculateTotalHours(item) {
-    return (parseTime(item.sun) || 0) +
-        (parseTime(item.mon) || 0) +
-        (parseTime(item.tue) || 0) +
-        (parseTime(item.wed) || 0) +
-        (parseTime(item.thu) || 0) +
-        (parseTime(item.fri) || 0) +
-        (parseTime(item.sat) || 0);
-}
+        // Function to calculate total hours for an employee
+        function calculateTotalHours(item) {
+            return (parseTime(item.sun) || 0) +
+                (parseTime(item.mon) || 0) +
+                (parseTime(item.tue) || 0) +
+                (parseTime(item.wed) || 0) +
+                (parseTime(item.thu) || 0) +
+                (parseTime(item.fri) || 0) +
+                (parseTime(item.sat) || 0);
+        }
 
-// Function to parse time string (HH:MM) into minutes
-function parseTime(timeStr) {
-    if (!timeStr || timeStr.trim() === '') return 0;
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    return (hours || 0) * 60 + (minutes || 0);
-}
+        // Function to parse time string (HH:MM) into minutes
+        function parseTime(timeStr) {
+            if (!timeStr || timeStr.trim() === '') return 0;
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return (hours || 0) * 60 + (minutes || 0);
+        }
 
-// Function to format minutes into HH:MM
-function formatTime(minutes) {
-    if (minutes === 0 || isNaN(minutes)) return '';
-    const hrs = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-}
-
-
-</script>
+        // Function to format minutes into HH:MM
+        function formatTime(minutes) {
+            if (minutes === 0 || isNaN(minutes)) return '';
+            const hrs = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+        }
+    </script>
 
 
 
 </div>
 
-<?php include('_templates/footer.php'); ?>
+<?php Session::loadTemplate('footer'); ?>
