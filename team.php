@@ -1,5 +1,7 @@
-<?php include('_templates/head.php'); ?>
-<?php include('_templates/header.php'); ?>
+<?php
+Session::loadTemplate('head');
+Session::loadTemplate('header');
+?>
 <?php include('libs/load.php'); ?> <!-- Include your database connection -->
 
 <div class="container mt-5">

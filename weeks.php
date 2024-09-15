@@ -1,8 +1,9 @@
-<?php include('_templates/head.php'); ?>
+<?php
+Session::loadTemplate('head');
+Session::loadTemplate('header');
+?>
 
-<?php include('_templates/header.php'); ?>
-
-<?php include('libs/load.php'); ?> <!-- Include your database connection -->
+<?php include('libs/load.php'); ?>
 
 <div class="container mt-5">
     <h2 class="text-center">Weeks Management</h2>

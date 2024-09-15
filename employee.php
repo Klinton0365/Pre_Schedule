@@ -1,6 +1,8 @@
-<?php include('_templates/head.php'); ?>
-<?php include('_templates/header.php'); ?>
-<?php include('libs/load.php'); ?> <!-- Database connection file -->
+<?php
+Session::loadTemplate('head');
+Session::loadTemplate('header');
+?>
+<?php include('libs/load.php'); ?> 
 
 <div class="container mt-5">
     <h2 class="text-center">Employee Management</h2>
@@ -173,4 +175,4 @@ document.getElementById('employeeForm').addEventListener('submit', function(e) {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<?php include('_templates/footer.php'); ?>
+<?php Session::loadTemplate('footer'); ?>

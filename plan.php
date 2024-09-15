@@ -1,6 +1,7 @@
 <?php
-include('_templates/head.php');
-include('_templates/header.php');
+Session::loadTemplate('head');
+Session::loadTemplate('header');
+
 include('libs/load.php');
 
 $conn = Database::getConnection();

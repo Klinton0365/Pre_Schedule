@@ -1,5 +1,7 @@
-<?php include('_templates/head.php'); ?>
-<?php include('_templates/header.php'); ?>
+<?php
+Session::loadTemplate('head');
+Session::loadTemplate('header');
+?>
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">Weekly Pre Scheduling</h1>
