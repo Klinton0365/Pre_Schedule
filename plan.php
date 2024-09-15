@@ -1,8 +1,9 @@
 <?php
+include('libs/load.php');
 Session::loadTemplate('head');
 Session::loadTemplate('header');
 
-include('libs/load.php');
+
 
 $conn = Database::getConnection();
 

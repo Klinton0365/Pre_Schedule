@@ -1,9 +1,9 @@
 <?php
+include('libs/load.php');
 Session::loadTemplate('head');
 Session::loadTemplate('header');
 ?>
 
-<?php include('libs/load.php'); ?>
 
 <div class="container mt-5">
     <h2 class="text-center">Weeks Management</h2>
